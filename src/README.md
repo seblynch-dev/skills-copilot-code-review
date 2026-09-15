@@ -5,7 +5,9 @@ A super simple FastAPI application that allows students to view and sign up for 
 ## Features
 
 - View all available extracurricular activities
-- Sign up for activities
+- Sign in as a teacher to register students
+- View current school announcements
+- Add, modify, and delete dated announcements as a signed-in teacher
 
 ## Getting Started
 
@@ -27,10 +29,19 @@ A super simple FastAPI application that allows students to view and sign up for 
 
 ## API Endpoints
 
-| Method | Endpoint                                                          | Description                                                         |
-| ------ | ----------------------------------------------------------------- | ------------------------------------------------------------------- |
-| GET    | `/activities`                                                     | Get all activities with their details and current participant count |
-| POST   | `/activities/{activity_name}/signup?email=student@mergington.edu` | Sign up for an activity                                             |
+| Method | Endpoint | Description |
+| ------ | -------- | ----------- |
+| GET | `/activities` | Get activities, with optional day and time filters |
+| POST | `/activities/{activity_name}/signup` | Register a student as a signed-in teacher |
+| POST | `/activities/{activity_name}/unregister` | Unregister a student as a signed-in teacher |
+| POST | `/auth/login` | Sign in and receive a session token |
+| GET | `/auth/check-session` | Validate an existing session token |
+| POST | `/auth/logout` | Invalidate a session token |
+| GET | `/announcements` | Get announcements active today |
+| GET | `/announcements/manage` | Get all announcements as a signed-in teacher |
+| POST | `/announcements` | Create an announcement as a signed-in teacher |
+| PUT | `/announcements/{announcement_id}` | Modify an announcement as a signed-in teacher |
+| DELETE | `/announcements/{announcement_id}` | Delete an announcement as a signed-in teacher |
 
 ## Data Model
 
@@ -43,8 +54,8 @@ The application uses a simple data model with meaningful identifiers:
    - Maximum number of participants allowed
    - List of student emails who are signed up
 
-2. **Students** - Uses email as identifier:
-   - Name
-   - Grade level
+2. **Teachers** - Uses username as identifier and stores a hashed password.
 
-All data is stored in memory, which means data will be reset when the server restarts.
+3. **Announcements** - Stores a message, optional start date, and required expiration date.
+
+Application data is stored in MongoDB. Teacher session tokens are held in server memory and expire when the server restarts or the user logs out.

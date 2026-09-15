@@ -12,8 +12,9 @@
     />
   </head>
   <body>
-    <div class="announcement-banner">
-      📢 Activity registration is open until the end of the month. Don't lose your spot!
+    <div id="announcement-banner" class="announcement-banner hidden" role="status" aria-live="polite">
+      <span class="announcement-icon" aria-hidden="true">!</span>
+      <div id="announcement-messages"></div>
     </div>
     <header>
       <h1>Mergington High School</h1>
@@ -26,6 +27,10 @@
           </button>
           <div id="user-info" class="hidden">
             <span id="display-name"></span>
+            <button id="manage-announcements-button" class="header-action" type="button">
+              <span aria-hidden="true">+</span>
+              <span>Announcements</span>
+            </button>
             <button id="logout-button">Logout</button>
           </div>
         </div>
@@ -136,6 +141,51 @@
         <div id="login-message" class="hidden message"></div>
       </div>
     </div>
+
+    <!-- Announcement Manager -->
+    <dialog id="announcement-manager" class="announcement-manager" aria-labelledby="announcement-manager-title">
+      <div class="announcement-dialog-header">
+        <div>
+          <p class="dialog-eyebrow">School communications</p>
+          <h3 id="announcement-manager-title">Manage announcements</h3>
+        </div>
+        <button id="close-announcement-manager" class="dialog-close" type="button" aria-label="Close announcement manager">&times;</button>
+      </div>
+      <div class="announcement-dialog-body">
+        <section class="announcement-list-panel" aria-labelledby="announcement-list-title">
+          <div class="panel-heading">
+            <h4 id="announcement-list-title">All announcements</h4>
+            <span id="announcement-count" class="count-badge">0</span>
+          </div>
+          <div id="announcement-manager-message" class="manager-message hidden" role="status"></div>
+          <div id="announcement-list" class="announcement-list"></div>
+        </section>
+        <section class="announcement-form-panel" aria-labelledby="announcement-form-title">
+          <h4 id="announcement-form-title">New announcement</h4>
+          <form id="announcement-form">
+            <div class="form-group">
+              <label for="announcement-message">Message</label>
+              <textarea id="announcement-message" maxlength="500" rows="5" required placeholder="Share an important update..."></textarea>
+              <span class="field-hint">Keep it clear and concise.</span>
+            </div>
+            <div class="date-fields">
+              <div class="form-group">
+                <label for="announcement-start-date">Start date <span>(optional)</span></label>
+                <input id="announcement-start-date" type="date" />
+              </div>
+              <div class="form-group">
+                <label for="announcement-expiration-date">Expiration date</label>
+                <input id="announcement-expiration-date" type="date" required />
+              </div>
+            </div>
+            <div class="announcement-form-actions">
+              <button id="cancel-announcement-edit" class="secondary-button hidden" type="button">Cancel edit</button>
+              <button id="save-announcement" type="submit">Add announcement</button>
+            </div>
+          </form>
+        </section>
+      </div>
+    </dialog>
 
     <script src="app.js"></script>
   </body>
